@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input
+      class="form-control"
+      type="text"
+      placeholder="Поиск"
+      id="myInput"
+      onkeyup="tableSearch()"
+    />
+    <table id="myTable" class="table table-striped">
+      <thead>
+        <tr>
+          <th data-type="number">id</th>
+          <th data-type="string">title</th>
+          <th data-type="string">body</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <script src="index.js"></script>
+  </body>
+</html>
