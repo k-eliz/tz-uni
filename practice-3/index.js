@@ -7,25 +7,26 @@ fetch("https://jsonplaceholder.typicode.com/posts")
   });
 
 function displayData(data) {
-  var tableBody = document.querySelector("#myTable tbody");
-  for (var i = 0; i < data.length; i++) {
-    var row = tableBody.insertRow();
-    var nameCell = row.insertCell(0);
-    var descriptionCell = row.insertCell(1);
-    var bodyCell = row.insertCell(2);
+  let tableBody = document.querySelector("#myTable tbody");
+  for (let i = 0; i < data.length; i++) {
+    let row = tableBody.insertRow();
+    let nameCell = row.insertCell(0);
+    let descriptionCell = row.insertCell(1);
+    let bodyCell = row.insertCell(2);
     nameCell.innerHTML = data[i].id;
     descriptionCell.innerHTML = data[i].title;
     bodyCell.innerHTML = data[i].body;
   }
 }
+let table = document.getElementById("myTable");
 function tableSearch() {
-  var phrase = document.getElementById("myInput");
-  var table = document.getElementById("myTable");
-  var regPhrase = new RegExp(phrase.value, "i");
-  var flag = false;
-  for (var i = 1; i < table.rows.length; i++) {
+  let phrase = document.getElementById("myInput");
+
+  let regPhrase = new RegExp(phrase.value, "i");
+  let flag = false;
+  for (let i = 1; i < table.rows.length; i++) {
     flag = false;
-    for (var j = table.rows[i].cells.length - 1; j >= 0; j--) {
+    for (let j = table.rows[i].cells.length - 1; j >= 0; j--) {
       flag = regPhrase.test(table.rows[i].cells[j].innerHTML);
       if (flag) break;
     }
@@ -44,6 +45,8 @@ table.onclick = function (e) {
   sortTable(th.cellIndex, th.dataset.type);
 };
 
+const sortingDirections = [1, 1, 1];
+
 function sortTable(colNum, type) {
   let tbody = table.querySelector("tbody");
   let rowsArray = Array.from(tbody.rows);
@@ -51,17 +54,23 @@ function sortTable(colNum, type) {
   switch (type) {
     case "number":
       compare = function (rowA, rowB) {
-        return rowA.cells[colNum].innerHTML - rowB.cells[colNum].innerHTML;
+        return (
+          (rowA.cells[colNum].innerHTML - rowB.cells[colNum].innerHTML) *
+          sortingDirections[colNum]
+        );
       };
       break;
     case "string":
       compare = function (rowA, rowB) {
         return rowA.cells[colNum].innerHTML > rowB.cells[colNum].innerHTML
-          ? 1
-          : -1;
+          ? 1 * sortingDirections[colNum]
+          : -1 * sortingDirections[colNum];
       };
       break;
   }
+  sortingDirections[colNum] *= -1;
   rowsArray.sort(compare);
-  tbody.append(...rowsArray);
+  for (let i = 0; i < rowsArray.length; i++) {
+    tbody.appendChild(rowsArray[i]);
+  }
 }
